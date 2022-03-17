@@ -16,18 +16,18 @@ const server = app.listen(port, () => {
 
 app.get('/app', (req, res) => {
     res.status(200).end('200 OK');
-    res.type("text/plain");
+    // res.type("text/plain");
 })
 
 app.get('/app/flips/:number', (req, res) => {
     // const flips = manyflips(req.params.number)
     // res.status(200).json({ 'message': req.params.number })
-    res.status(200).json({ 'message': manyflips(req.params.number) })
+    res.status(200).json({ 'message': coinFlips(req.params.number) })
 })
 
 app.use(function(req, res) {
     res.status(404).send("404 Not found");
-    res.type("text/plain");
+    // res.type("text/plain");
 })
 
 function coinFlip() {
