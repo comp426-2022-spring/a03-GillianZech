@@ -1,14 +1,22 @@
 const express = require('express');
 const app = express();
 const args = require('minimist')(process.argv.slice(2));
-args['port_arg'];
-const port_arg = args.port_arg;
+args['port'];
+const num = args.port;
 
-if (port_arg == null) {
-    var port = 5000;
-} else {
-    var port = port_arg;
+var port = 5000
+if (num != null) {
+    var port = num;
 }
+
+// var port
+// if (num == null) {
+//     port = 5000;
+//     // console.log("port = 5000")
+// } else {
+//     port = num;
+//     // console.log("port = else")
+// }
 
 const server = app.listen(port, () => {
     console.log('App is running on port %PORT%'.replace('%PORT%', port));
@@ -19,14 +27,26 @@ app.get('/app', (req, res) => {
     // res.type("text/plain");
 })
 
+app.get('/app/flip', (req, res) => {
+    res.status(200).json({ 'message': coinFlip() })
+})
+
 app.get('/app/flips/:number', (req, res) => {
     // const flips = manyflips(req.params.number)
     // res.status(200).json({ 'message': req.params.number })
     res.status(200).json({ 'message': coinFlips(req.params.number) })
 })
 
+app.get('/app/flip/call/heads', (req, res) => {
+    res.status(200).json({ 'message': flipACoin('heads') })
+})
+
+app.get('/app/flip/call/tails', (req, res) => {
+    res.status(200).json({ 'message': flipACoin('tails') })
+})
+
 app.use(function(req, res) {
-    res.status(404).send("404 Not found");
+    res.status(404).send("404 NOT FOUND");
     // res.type("text/plain");
 })
 
@@ -54,7 +74,7 @@ function countFlips(array) {
         tail++;
         }
     }
-    return {heads: head, tails: tail};
+    return {heads: head, tails: tail}; // Might have to change it for when a number is 0
 }
 
 function flipACoin(call) {
