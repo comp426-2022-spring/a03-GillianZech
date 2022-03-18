@@ -2,19 +2,19 @@ const express = require('express');
 const app = express();
 const args = require('minimist')(process.argv.slice(2));
 args['port'];
-const num = args.port;
+const port_arg = args.port;
 
 var port = 5000
-if (num != null) {
-    var port = num;
+if (port_arg != null) {
+    var port = port_arg;
 }
 
 // var port
-// if (num == null) {
+// if (port_arg == null) {
 //     port = 5000;
 //     // console.log("port = 5000")
 // } else {
-//     port = num;
+//     port = port_arg;
 //     // console.log("port = else")
 // }
 
@@ -32,9 +32,12 @@ app.get('/app/flip', (req, res) => {
 })
 
 app.get('/app/flips/:number', (req, res) => {
-    // const flips = manyflips(req.params.number)
-    // res.status(200).json({ 'message': req.params.number })
-    res.status(200).json({ 'raw': coinFlips(req.params.number) })
+    // working on THIS ONE
+    arr = coinFlips(req.params.number)
+    ay = countFlips(arr)
+    result = arr + ay
+    res.status(200).json({ 'raw': arr,'summary': ay })
+    // res.status(200).json({ 'summary' : countFlips(arr) })
 })
 
 app.get('/app/flip/call/heads', (req, res) => {
@@ -60,6 +63,7 @@ function coinFlips(flips) {
         flip_array.push(coinFlip());
         flips--;
     }
+    // return flip_array + countFlips(flip_array);
     return flip_array;
 }
 
@@ -74,7 +78,10 @@ function countFlips(array) {
         tail++;
         }
     }
-    return {heads: head, tails: tail}; // Might have to change it for when a number is 0
+    // to_return = "{heads: " + head + ", tails: " + tail + "}";
+    // return "summary:" + to_return;
+    return {heads: head, tails: tail}
+    // Might have to change it for when a number is 0
 }
 
 function flipACoin(call) {
